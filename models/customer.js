@@ -10,18 +10,21 @@ async function main() {
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
-//one to few relation
+//one to many relation
 const orderSchema = new Schema({
   item: String,
   price: Number,
 });
 const customerSchema = new Schema({
-    name: String,
-    orders: {
-        
-    }
-    
-})
+  name: String,
+  orders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Order", //from where it is coming
+    },
+  ],
+});
+const Customer = mongoose.model("Customer", customerSchema);
 const Order = mongoose.model("Order", orderSchema);
 const addOrder = async () => {
   let res = await Order.insertMany([
@@ -50,3 +53,18 @@ const addOrder = async () => {
 };
 
 addOrder();
+const addCustomer = async () => {
+  //create an customer object
+  let cust1 = new Customer({
+    name: "rahul",
+  });
+  //push orders data into the object
+  let order1 = await Order.findOne({ item: "ice cream" });
+
+  let order2 = await Order.findOne({ item: "samosa" });
+  cust1.orders.push(order1);
+  cust1.orders.push(order2);
+  let res = await cust1.save();
+  console.log(res);
+};
+addCustomer();
