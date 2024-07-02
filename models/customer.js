@@ -49,7 +49,7 @@ const addOrder = async () => {
     { item: "ice cream", price: 150 },
     { item: "candy", price: 60 },
   ]);
-  console.log(res);
+
 };
 
 addOrder();
@@ -65,6 +65,11 @@ const addCustomer = async () => {
   cust1.orders.push(order1);
   cust1.orders.push(order2);
   let res = await cust1.save();
-  console.log(res);
+ // console.log(res);
 };
 addCustomer();
+const findCustomer = async() => {
+    let customer = await Customer.find({}).populate("orders")//to get detailed object 
+    console.log(customer);
+}
+findCustomer();
