@@ -42,7 +42,7 @@ const addOrder = async () => {
     { item: "doughnut", price: 110 },
     { item: "cake", price: 200 },
     { item: "coffee", price: 80 },
-    { item: "tea", price: 70 },
+    { item: "te3000a", price: 70 },
     { item: "juice", price: 90 },
     { item: "smoothie", price: 100 },
     { item: "milkshake", price: 120 },
