@@ -49,10 +49,9 @@ const addOrder = async () => {
     { item: "ice cream", price: 150 },
     { item: "candy", price: 60 },
   ]);
-
 };
 
-addOrder();
+// addOrder();
 const addCustomer = async () => {
   //create an customer object
   let cust1 = new Customer({
@@ -65,11 +64,30 @@ const addCustomer = async () => {
   cust1.orders.push(order1);
   cust1.orders.push(order2);
   let res = await cust1.save();
- // console.log(res);
+  // console.log(res);
 };
-addCustomer();
-const findCustomer = async() => {
-    let customer = await Customer.find({}).populate("orders")//to get detailed object 
-    console.log(customer);
-}
-findCustomer();
+// addCustomer();
+const findCustomer = async () => {
+  let customer = await Customer.find({}).populate("orders"); //to get detailed object
+  console.log(customer);
+};
+// findCustomer();
+const addCust = async () => {
+  let newCust = new Customer({
+    name: "karan",
+  });
+  let newOrder = new Order({
+    item: "pizza",
+    price: 200,
+  });
+  newCust.orders.push(newOrder);
+  await newOrder.save();
+  await newCust.save();
+  console.log("added");
+};
+// addCust();
+const delCust = async () => {
+  let data = await Customer.findByIdAndDelete('66865590d249671f3891369c');
+  console.log(data);
+};
+delCust();
