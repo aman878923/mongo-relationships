@@ -24,6 +24,17 @@ const customerSchema = new Schema({
     },
   ],
 });
+// customerSchema.pre("findOneAndDelete", async () => {
+//   console.log("pre middleware");
+// });
+customerSchema.post("findOneAndDelete", async (delData) => {
+  console.log("post middleware");
+  console.log(delData);
+  if (delData.orders.length) {
+    let res = await Order.deleteMany({ _id: { $in: delData.orders } });
+    console.log(res);
+  }
+});
 const Customer = mongoose.model("Customer", customerSchema);
 const Order = mongoose.model("Order", orderSchema);
 const addOrder = async () => {
@@ -63,6 +74,7 @@ const addCustomer = async () => {
   let order2 = await Order.findOne({ item: "samosa" });
   cust1.orders.push(order1);
   cust1.orders.push(order2);
+
   let res = await cust1.save();
   // console.log(res);
 };
@@ -74,20 +86,24 @@ const findCustomer = async () => {
 // findCustomer();
 const addCust = async () => {
   let newCust = new Customer({
-    name: "karan",
+    name: "arn",
   });
   let newOrder = new Order({
-    item: "pizza",
+    item: "coke",
     price: 200,
   });
   newCust.orders.push(newOrder);
-  await newOrder.save();
+  let res = await newOrder.save();
+  console.log(res);
   await newCust.save();
   console.log("added");
 };
 // addCust();
+
 const delCust = async () => {
-  let data = await Customer.findByIdAndDelete('66865590d249671f3891369c');
+  let data = await Customer.findByIdAndDelete('6688214275bb86b938a33321');
   console.log(data);
 };
 delCust();
+
+/* In Mongoose, you can use middleware functions to perform actions before or after certain operations on a document or a collection. Middleware functions are particularly useful for handling deletion operations and performing additional tasks or validations before or after the deletion. */
